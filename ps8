@@ -257,7 +257,7 @@ def simulationWithDrug(numViruses, maxPop, maxBirthProb, clearProb, resistances,
     pylab.show()
     
 def runDrugSimulation (numViruses, maxPop, maxBirthProb, clearProb, resistances,
-                                           mutProb, numStepsBeforeDrugApplied, totalNumSteps):
+                                           mutProb, numStepsBeforeDrugApplied, totalNumSteps, drug):
    
     assert numStepsBeforeDrugApplied <= totalNumSteps
     
@@ -273,9 +273,9 @@ def runDrugSimulation (numViruses, maxPop, maxBirthProb, clearProb, resistances,
     numResistantVirusesEachStep = []
     for i in range(0, totalNumSteps):
         if i == numStepsBeforeDrugApplied:
-            patient.addPrescription("guttagonal")
+            patient.addPrescription(drug)
         numVirusesEachStep.append(patient.update())
-        numResistantVirusesEachStep.append(patient.getResistPop(["guttagonal"]))
+        numResistantVirusesEachStep.append(patient.getResistPop([drug]))
 
     return (numVirusesEachStep, numResistantVirusesEachStep)
 
@@ -337,7 +337,7 @@ def simulationTwoDrugsDelayedTreatment(numTrials, numViruses, maxPop, maxBirthPr
     for delay in timeDelays:
         finalNumViruses = []
         for trial in range(num_trials):
-            total = single_with_drug_simulation(delay, virus_instances, maxPop, maxBirthProb, clearProb, resistances, mutProb, drug1, drug2)
+            total = simulationTwoDrugsVirusPopulations(delay, numViruses, maxPop, maxBirthProb, clearProb, resistances, mutProb, drug1, drug2)
           finalNumViruses .append(total[0][-1])
 
         results[delay] = finalNumViruses
